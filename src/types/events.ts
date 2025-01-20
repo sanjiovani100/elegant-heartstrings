@@ -30,7 +30,7 @@ export interface TicketType {
   description: string | null;
   price: number;
   capacity: number | null;
-  benefits: any[] | null;
+  benefits: Json | null;
 }
 
 export interface Event {
@@ -47,3 +47,28 @@ export interface Event {
   schedule_timeline: ScheduleTimeline | null;
   ticket_types: TicketType[];
 }
+
+export const isVenueDetails = (value: unknown): value is VenueDetails => {
+  if (!value || typeof value !== 'object') return false;
+  const v = value as Record<string, unknown>;
+  return (
+    typeof v.layout === 'string' &&
+    typeof v.seating_capacity === 'number' &&
+    typeof v.standing_capacity === 'number' &&
+    Array.isArray(v.accessibility_features) &&
+    Array.isArray(v.facilities)
+  );
+};
+
+export const isScheduleTimeline = (value: unknown): value is ScheduleTimeline => {
+  if (!value || typeof value !== 'object') return false;
+  const s = value as Record<string, unknown>;
+  return (
+    typeof s.setup_time === 'string' &&
+    typeof s.rehearsal_time === 'string' &&
+    typeof s.doors_open === 'string' &&
+    typeof s.main_event === 'string' &&
+    Array.isArray(s.intervals) &&
+    typeof s.closing_time === 'string'
+  );
+};

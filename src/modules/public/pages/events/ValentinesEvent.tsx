@@ -12,7 +12,7 @@ const VALENTINES_EVENT_ID = "90a276c5-62ee-4d02-8ef6-d4f5dbfa6e5c";
 
 const ValentinesEvent = () => {
   const { toast } = useToast();
-  const { data: event, isLoading, error } = useEvents(VALENTINES_EVENT_ID);
+  const { data: eventData, isLoading, error } = useEvents(VALENTINES_EVENT_ID);
 
   React.useEffect(() => {
     if (error) {
@@ -34,7 +34,7 @@ const ValentinesEvent = () => {
     );
   }
 
-  if (!event) {
+  if (!eventData || Array.isArray(eventData)) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
         <h1 className="text-2xl font-bold">Event not found</h1>
@@ -42,6 +42,8 @@ const ValentinesEvent = () => {
       </div>
     );
   }
+
+  const event = eventData;
 
   return (
     <div className="min-h-screen bg-black">
