@@ -31,6 +31,15 @@ export interface ScheduleTimeline {
   [key: string]: string | Array<any> | undefined;
 }
 
+export interface TicketType {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  capacity: number | null;
+  benefits: any[] | null;
+}
+
 export interface Event {
   id: string;
   title: string;
@@ -43,5 +52,5 @@ export interface Event {
   category: string | null;
   venue_details: VenueDetails | null;
   schedule_timeline: ScheduleTimeline | null;
-  price?: string;
+  ticket_types: TicketType[];
 }

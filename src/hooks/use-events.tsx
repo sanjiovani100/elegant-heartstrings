@@ -13,7 +13,14 @@ export const useEvents = (eventId?: string) => {
           .from("events")
           .select(`
             *,
-            ticket_types (*)
+            ticket_types (
+              id,
+              name,
+              description,
+              price,
+              capacity,
+              benefits
+            )
           `)
           .eq('id', eventId)
           .maybeSingle();
@@ -39,7 +46,7 @@ export const useEvents = (eventId?: string) => {
           category: data.category,
           venue_details: transformVenueDetails(data.venue_details),
           schedule_timeline: transformScheduleTimeline(data.schedule_timeline),
-          ticket_types: data.ticket_types
+          ticket_types: data.ticket_types || []
         };
 
         return transformedEvent;
@@ -50,7 +57,12 @@ export const useEvents = (eventId?: string) => {
           .select(`
             *,
             ticket_types (
-              price
+              id,
+              name,
+              description,
+              price,
+              capacity,
+              benefits
             )
           `)
           .eq("is_deleted", false)
@@ -60,7 +72,12 @@ export const useEvents = (eventId?: string) => {
           throw error;
         }
 
-        return data;
+        return data.map(event => ({
+          ...event,
+          venue_details: transformVenueDetails(event.venue_details),
+          schedule_timeline: transformScheduleTimeline(event.schedule_timeline),
+          ticket_types: event.ticket_types || []
+        })) as Event[];
       }
     },
   });
