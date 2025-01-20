@@ -14,7 +14,8 @@ import { Event } from "@/types/events";
 import { transformVenueDetails, transformScheduleTimeline } from "@/shared/utils/transformers";
 
 const EventDetailsPage = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params.id;
   const { toast } = useToast();
 
   const { data: event, isLoading, error } = useQuery({
