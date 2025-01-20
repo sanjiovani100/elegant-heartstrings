@@ -5,7 +5,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Event } from "@/types/events";
 import { transformVenueDetails, transformScheduleTimeline } from "@/types/utils/transformers";
-import EventDetailsComponent from "@/components/events/EventDetails";
+import { HeroSection } from "./components/HeroSection";
+import { EventDetails } from "./components/EventDetails";
+import { ScheduleTimeline } from "./components/ScheduleTimeline";
+import { PricingSection } from "./components/PricingSection";
+import { FAQSection } from "./components/FAQSection";
 
 // Use the UUID from the event we just created
 const VALENTINES_EVENT_ID = "90a276c5-62ee-4d02-8ef6-d4f5dbfa6e5c";
@@ -69,7 +73,15 @@ const ValentinesEvent = () => {
     );
   }
 
-  return <EventDetailsComponent event={event} />;
+  return (
+    <div className="min-h-screen bg-black">
+      <HeroSection event={event} />
+      <EventDetails event={event} />
+      <ScheduleTimeline event={event} />
+      <PricingSection event={event} />
+      <FAQSection />
+    </div>
+  );
 };
 
 export default ValentinesEvent;
