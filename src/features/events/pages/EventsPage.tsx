@@ -4,11 +4,12 @@ import EventsGrid from "../components/EventsGrid";
 import EventsCTA from "../components/EventsCTA";
 import { ResizeErrorBoundary } from "@/shared/components/error/ResizeErrorBoundary";
 import { useEvents } from "../hooks/useEvents";
+import { EventFilters } from "../types/event.types";
 
 const EventsPage = () => {
   const { data: events, isLoading } = useEvents();
 
-  const handleFiltersChange = (filters: any) => {
+  const handleFiltersChange = (filters: EventFilters) => {
     // Handle filter changes
     console.log("Filters changed:", filters);
   };

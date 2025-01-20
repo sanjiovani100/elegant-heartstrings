@@ -1,4 +1,4 @@
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -6,8 +6,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useState } from "react";
+import { EventFilters, EventsFiltersProps } from "../types/event.types";
 
-const EventsFilters = () => {
+const EventsFilters = ({ onFiltersChange }: EventsFiltersProps) => {
+  const [filters, setFilters] = useState<EventFilters>({
+    category: undefined,
+    date: undefined,
+    priceRange: undefined,
+  });
+
+  const handleFilterChange = (key: keyof EventFilters, value: string) => {
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    onFiltersChange(newFilters);
+  };
+
+  const handleClearFilters = () => {
+    const clearedFilters = {
+      category: undefined,
+      date: undefined,
+      priceRange: undefined,
+    };
+    setFilters(clearedFilters);
+    onFiltersChange(clearedFilters);
+  };
+
   return (
     <div className="space-y-6 bg-white/5 border border-white/10 rounded-lg p-6">
       <div>
@@ -15,7 +39,10 @@ const EventsFilters = () => {
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm text-gray-400">Category</label>
-            <Select>
+            <Select
+              onValueChange={(value) => handleFilterChange("category", value)}
+              value={filters.category}
+            >
               <SelectTrigger className="w-full bg-white/10 border-white/20 text-white">
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
@@ -29,7 +56,10 @@ const EventsFilters = () => {
 
           <div className="space-y-2">
             <label className="text-sm text-gray-400">Date</label>
-            <Select>
+            <Select
+              onValueChange={(value) => handleFilterChange("date", value)}
+              value={filters.date}
+            >
               <SelectTrigger className="w-full bg-white/10 border-white/20 text-white">
                 <SelectValue placeholder="All Dates" />
               </SelectTrigger>
@@ -43,7 +73,10 @@ const EventsFilters = () => {
 
           <div className="space-y-2">
             <label className="text-sm text-gray-400">Price Range</label>
-            <Select>
+            <Select
+              onValueChange={(value) => handleFilterChange("priceRange", value)}
+              value={filters.priceRange}
+            >
               <SelectTrigger className="w-full bg-white/10 border-white/20 text-white">
                 <SelectValue placeholder="All Prices" />
               </SelectTrigger>
@@ -60,6 +93,7 @@ const EventsFilters = () => {
       <Button 
         variant="outline" 
         className="w-full border-white/20 text-white hover:bg-white/10"
+        onClick={handleClearFilters}
       >
         Clear Filters
       </Button>
