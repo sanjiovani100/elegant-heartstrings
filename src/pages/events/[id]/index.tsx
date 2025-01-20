@@ -30,7 +30,10 @@ const EventDetailsPage = () => {
 
       const { data, error } = await supabase
         .from('events')
-        .select('*')
+        .select(`
+          *,
+          ticket_types (*)
+        `)
         .eq('id', id)
         .single();
       
