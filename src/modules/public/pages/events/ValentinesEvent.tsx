@@ -7,7 +7,8 @@ import { Event } from "@/types/events";
 import { transformVenueDetails, transformScheduleTimeline } from "@/types/utils/transformers";
 import EventDetailsComponent from "@/components/events/EventDetails";
 
-const VALENTINES_EVENT_ID = "your-valentines-event-id"; // Replace with actual UUID
+// Use the UUID from the event we just created
+const VALENTINES_EVENT_ID = "90a276c5-62ee-4d02-8ef6-d4f5dbfa6e5c";
 
 const ValentinesEvent = () => {
   const { toast } = useToast();
