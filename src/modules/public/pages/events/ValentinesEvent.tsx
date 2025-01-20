@@ -8,12 +8,10 @@ import { ScheduleTimeline } from "./components/ScheduleTimeline";
 import { PricingSection } from "./components/PricingSection";
 import { FAQSection } from "./components/FAQSection";
 
-// Use the UUID from the event we just created
 const VALENTINES_EVENT_ID = "90a276c5-62ee-4d02-8ef6-d4f5dbfa6e5c";
 
 const ValentinesEvent = () => {
   const { toast } = useToast();
-
   const { data: event, isLoading, error } = useEvents(VALENTINES_EVENT_ID);
 
   React.useEffect(() => {
