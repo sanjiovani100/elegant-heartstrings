@@ -1,0 +1,74 @@
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
+import { Event } from "@/types/events";
+import { transformVenueDetails, transformScheduleTimeline } from "@/types/utils/transformers";
+import EventDetailsComponent from "@/components/events/EventDetails";
+
+const VALENTINES_EVENT_ID = "your-valentines-event-id"; // Replace with actual UUID
+
+const ValentinesEvent = () => {
+  const { toast } = useToast();
+
+  const { data: event, isLoading, error } = useQuery({
+    queryKey: ['valentines-event'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select(`
+          *,
+          ticket_types (*)
+        `)
+        .eq('id', VALENTINES_EVENT_ID)
+        .single();
+      
+      if (error) throw error;
+      if (!data) throw new Error('Event not found');
+      
+      // Transform the data to match our Event type
+      const transformedEvent: Event = {
+        ...data,
+        venue_details: transformVenueDetails(data.venue_details),
+        schedule_timeline: transformScheduleTimeline(data.schedule_timeline)
+      };
+      
+      return transformedEvent;
+    },
+    retry: false
+  });
+
+  React.useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to load event details. Please try again later.",
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-8 p-4">
+        <Skeleton className="h-[60vh] w-full" />
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-96 w-full" />
+      </div>
+    );
+  }
+
+  if (!event) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <h1 className="text-2xl font-bold">Event not found</h1>
+        <p className="text-gray-600 mt-2">The Valentine's 2025 event details are currently unavailable.</p>
+      </div>
+    );
+  }
+
+  return <EventDetailsComponent event={event} />;
+};
+
+export default ValentinesEvent;
