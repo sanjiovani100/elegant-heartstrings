@@ -1,9 +1,7 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useEvents } from "@/hooks/use-events";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { Event } from "@/types/events";
 import { transformVenueDetails, transformScheduleTimeline } from "@/types/utils/transformers";
 import { HeroSection } from "./components/HeroSection";
 import { EventDetails } from "./components/EventDetails";
@@ -17,32 +15,7 @@ const VALENTINES_EVENT_ID = "90a276c5-62ee-4d02-8ef6-d4f5dbfa6e5c";
 const ValentinesEvent = () => {
   const { toast } = useToast();
 
-  const { data: event, isLoading, error } = useQuery({
-    queryKey: ['valentines-event'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('events')
-        .select(`
-          *,
-          ticket_types (*)
-        `)
-        .eq('id', VALENTINES_EVENT_ID)
-        .single();
-      
-      if (error) throw error;
-      if (!data) throw new Error('Event not found');
-      
-      // Transform the data to match our Event type
-      const transformedEvent: Event = {
-        ...data,
-        venue_details: transformVenueDetails(data.venue_details),
-        schedule_timeline: transformScheduleTimeline(data.schedule_timeline)
-      };
-      
-      return transformedEvent;
-    },
-    retry: false
-  });
+  const { data: event, isLoading, error } = useEvents(VALENTINES_EVENT_ID);
 
   React.useEffect(() => {
     if (error) {
@@ -73,12 +46,18 @@ const ValentinesEvent = () => {
     );
   }
 
+  const transformedEvent = {
+    ...event,
+    venue_details: transformVenueDetails(event.venue_details),
+    schedule_timeline: transformScheduleTimeline(event.schedule_timeline)
+  };
+
   return (
     <div className="min-h-screen bg-black">
-      <HeroSection event={event} />
-      <EventDetails event={event} />
-      <ScheduleTimeline event={event} />
-      <PricingSection event={event} />
+      <HeroSection event={transformedEvent} />
+      <EventDetails event={transformedEvent} />
+      <ScheduleTimeline event={transformedEvent} />
+      <PricingSection event={transformedEvent} />
       <FAQSection />
     </div>
   );
