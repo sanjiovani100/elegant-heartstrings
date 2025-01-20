@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Event } from "../types/event.types";
+import { Event } from "@/types/events";
+import { transformVenueDetails, transformScheduleTimeline } from "@/shared/utils/transformers";
 
 export const useEvents = () => {
   return useQuery({
@@ -21,7 +22,14 @@ export const useEvents = () => {
         throw error;
       }
 
-      return data as Event[];
+      // Transform the data to match our Event type
+      const transformedEvents: Event[] = data.map(event => ({
+        ...event,
+        venue_details: transformVenueDetails(event.venue_details),
+        schedule_timeline: transformScheduleTimeline(event.schedule_timeline)
+      }));
+
+      return transformedEvents;
     },
   });
 };
