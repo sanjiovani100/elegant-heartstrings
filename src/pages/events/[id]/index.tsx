@@ -10,6 +10,8 @@ import { EventSchedule } from "./components/EventSchedule";
 import { VenueInfo } from "./components/VenueInfo";
 import { TicketingSection } from "./components/TicketingSection";
 import { ResizeErrorBoundary } from "@/components/error/ResizeErrorBoundary";
+import { Event } from "@/types/events";
+import { transformVenueDetails, transformScheduleTimeline } from "@/shared/utils/transformers";
 
 const EventDetailsPage = () => {
   const { id } = useParams();
@@ -32,7 +34,14 @@ const EventDetailsPage = () => {
       if (error) throw error;
       if (!data) throw new Error('Event not found');
       
-      return data;
+      // Transform the data to match our Event type
+      const transformedEvent: Event = {
+        ...data,
+        venue_details: transformVenueDetails(data.venue_details),
+        schedule_timeline: transformScheduleTimeline(data.schedule_timeline)
+      };
+      
+      return transformedEvent;
     },
     enabled: !!id
   });
