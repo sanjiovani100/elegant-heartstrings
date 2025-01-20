@@ -2,7 +2,6 @@ import React from "react";
 import { useEvents } from "@/hooks/use-events";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { transformVenueDetails, transformScheduleTimeline } from "@/types/utils/transformers";
 import { HeroSection } from "./components/HeroSection";
 import { EventDetails } from "./components/EventDetails";
 import { ScheduleTimeline } from "./components/ScheduleTimeline";
@@ -46,18 +45,12 @@ const ValentinesEvent = () => {
     );
   }
 
-  const transformedEvent = {
-    ...event,
-    venue_details: transformVenueDetails(event.venue_details),
-    schedule_timeline: transformScheduleTimeline(event.schedule_timeline)
-  };
-
   return (
     <div className="min-h-screen bg-black">
-      <HeroSection event={transformedEvent} />
-      <EventDetails event={transformedEvent} />
-      <ScheduleTimeline event={transformedEvent} />
-      <PricingSection event={transformedEvent} />
+      <HeroSection event={event} />
+      <EventDetails event={event} />
+      <ScheduleTimeline event={event} />
+      <PricingSection event={event} />
       <FAQSection />
     </div>
   );
