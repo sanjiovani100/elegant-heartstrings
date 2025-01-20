@@ -22,6 +22,12 @@ const EventDetailsPage = () => {
     queryFn: async () => {
       if (!id) throw new Error('Event ID is required');
       
+      // Validate UUID format using a regex
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(id)) {
+        throw new Error('Invalid event ID format');
+      }
+
       const { data, error } = await supabase
         .from('events')
         .select(`
@@ -43,14 +49,15 @@ const EventDetailsPage = () => {
       
       return transformedEvent;
     },
-    enabled: !!id
+    enabled: !!id,
+    retry: false
   });
 
   React.useEffect(() => {
     if (error) {
       toast({
         title: "Error",
-        description: "Failed to load event details. Please try again later.",
+        description: error instanceof Error ? error.message : "Failed to load event details. Please try again later.",
         variant: "destructive",
       });
     }
