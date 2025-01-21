@@ -11,11 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 
-interface EventCTAProps {
-  className?: string;
-}
-
-const EventCTA = ({ className }: EventCTAProps) => {
+const EventCTA = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (

@@ -8,6 +8,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { EventFilters as FilterType } from "@/features/events/types/event.types";
 import { ResizeErrorBoundary } from "@/components/error/ResizeErrorBoundary";
+import PublicLayout from "@/modules/public/layouts/PublicLayout";
+import EventsHero from "@/components/events/EventsHero";
+import EventsCTA from "@/components/events/EventCTA";
 
 const EventsPage = () => {
   const { toast } = useToast();
@@ -74,43 +77,53 @@ const EventsPage = () => {
   }, []);
 
   return (
-    <ResizeErrorBoundary>
-      <div className="container mx-auto px-4 py-8">
-        {/* Mobile Filter Button */}
-        <div className="lg:hidden mb-4">
-          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-            <SheetTrigger asChild>
-              <Button variant="outline" className="w-full">
-                <Menu className="mr-2 h-4 w-4" />
-                Filters
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-              <div className="py-4">
+    <PublicLayout>
+      <div className="min-h-screen bg-black">
+        <ResizeErrorBoundary>
+          <EventsHero />
+        </ResizeErrorBoundary>
+
+        <div className="container mx-auto px-4 py-16">
+          {/* Mobile Filter Button */}
+          <div className="lg:hidden mb-4">
+            <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+              <SheetTrigger asChild>
+                <Button variant="outline" className="w-full text-white border-white/10 hover:bg-white/10">
+                  <Menu className="mr-2 h-4 w-4" />
+                  Filters
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[300px] sm:w-[400px] bg-black/95 border-white/10">
+                <div className="py-4">
+                  <EventFilters onFiltersChange={handleFilterChange} />
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Desktop Filters */}
+            <div className="hidden lg:block w-1/4 flex-shrink-0">
+              <div className="sticky top-24">
                 <EventFilters onFiltersChange={handleFilterChange} />
               </div>
-            </SheetContent>
-          </Sheet>
-        </div>
+            </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Desktop Filters */}
-          <div className="hidden lg:block w-1/4 flex-shrink-0">
-            <div className="sticky top-24">
-              <EventFilters onFiltersChange={handleFilterChange} />
+            {/* Events Grid */}
+            <div className="flex-grow">
+              <EventsGrid 
+                events={filteredEvents} 
+                isLoading={isLoading} 
+              />
             </div>
           </div>
-
-          {/* Events Grid */}
-          <div className="flex-grow">
-            <EventsGrid 
-              events={filteredEvents} 
-              isLoading={isLoading} 
-            />
-          </div>
         </div>
+
+        <ResizeErrorBoundary>
+          <EventsCTA />
+        </ResizeErrorBoundary>
       </div>
-    </ResizeErrorBoundary>
+    </PublicLayout>
   );
 };
 
