@@ -8,6 +8,7 @@ import ModelsPage from "@/modules/public/pages/models";
 import SponsorsPage from "@/pages/Sponsors";
 import TicketsPage from "@/pages/Tickets";
 import EventsPage from "@/modules/public/pages/events";
+import EventDetailsPage from "@/modules/public/pages/events/[id]";
 import LoginPage from "@/pages/auth/Login";
 import SponsorshipApplicationPage from "@/pages/sponsors/SponsorshipApplication";
 import CreateEventPage from "@/pages/admin/CreateEvent";
@@ -27,7 +28,8 @@ const App = () => {
       <Route path="/models" element={<ModelsPage />} />
       <Route path="/sponsors" element={<SponsorsPage />} />
       <Route path="/tickets" element={<TicketsPage />} />
-      <Route path="/events/*" element={<EventsPage />} />
+      <Route path="/events" element={<EventsPage />} />
+      <Route path="/events/:id" element={<EventDetailsPage />} />
       <Route path="/login" element={<LoginPage />} />
 
       {/* Protected Routes */}

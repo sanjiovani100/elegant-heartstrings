@@ -7,6 +7,7 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { EventFilters as FilterType } from "@/features/events/types/event.types";
+import { ResizeErrorBoundary } from "@/components/error/ResizeErrorBoundary";
 
 const EventsPage = () => {
   const { toast } = useToast();
@@ -73,41 +74,43 @@ const EventsPage = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Mobile Filter Button */}
-      <div className="lg:hidden mb-4">
-        <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-          <SheetTrigger asChild>
-            <Button variant="outline" className="w-full">
-              <Menu className="mr-2 h-4 w-4" />
-              Filters
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-            <div className="py-4">
+    <ResizeErrorBoundary>
+      <div className="container mx-auto px-4 py-8">
+        {/* Mobile Filter Button */}
+        <div className="lg:hidden mb-4">
+          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="w-full">
+                <Menu className="mr-2 h-4 w-4" />
+                Filters
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+              <div className="py-4">
+                <EventFilters onFiltersChange={handleFilterChange} />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Desktop Filters */}
+          <div className="hidden lg:block w-1/4 flex-shrink-0">
+            <div className="sticky top-24">
               <EventFilters onFiltersChange={handleFilterChange} />
             </div>
-          </SheetContent>
-        </Sheet>
-      </div>
+          </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Desktop Filters */}
-        <div className="hidden lg:block w-1/4 flex-shrink-0">
-          <div className="sticky top-24">
-            <EventFilters onFiltersChange={handleFilterChange} />
+          {/* Events Grid */}
+          <div className="flex-grow">
+            <EventsGrid 
+              events={filteredEvents} 
+              isLoading={isLoading} 
+            />
           </div>
         </div>
-
-        {/* Events Grid */}
-        <div className="flex-grow">
-          <EventsGrid 
-            events={filteredEvents} 
-            isLoading={isLoading} 
-          />
-        </div>
       </div>
-    </div>
+    </ResizeErrorBoundary>
   );
 };
 
