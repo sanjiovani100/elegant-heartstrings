@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Event } from "@/types/events";
+import { Event, TicketType } from "@/types/events";
 import { transformVenueDetails, transformScheduleTimeline } from "@/types/utils/transformers";
 
 export const useEvents = (eventId?: string) => {
@@ -12,36 +12,38 @@ export const useEvents = (eventId?: string) => {
           .from("events")
           .select(`
             *,
-            ticket_types (
-              id,
-              name,
-              description,
-              price,
-              capacity,
-              benefits
-            )
+            ticket_types (*)
           `)
           .eq('id', eventId)
           .maybeSingle();
-
+        
         if (error) throw error;
         if (!data) throw new Error("Event not found");
+        
+        // Transform the ticket types to match our TicketType interface
+        const transformedTicketTypes: TicketType[] = (data.ticket_types || []).map(ticket => ({
+          id: ticket.id,
+          name: ticket.name,
+          description: ticket.description,
+          price: ticket.price,
+          capacity: ticket.capacity,
+          benefits: Array.isArray(ticket.benefits) ? ticket.benefits : [],
+          event_id: ticket.event_id,
+          sale_start_date: ticket.sale_start_date,
+          sale_end_date: ticket.sale_end_date,
+          status: ticket.status,
+          created_at: ticket.created_at,
+          updated_at: ticket.updated_at
+        }));
 
+        // Transform the event data to match our Event type
         const transformedEvent: Event = {
-          id: data.id,
-          title: data.title,
-          description: data.description,
-          date: data.date,
-          location: data.location,
-          status: data.status,
-          cover_image: data.cover_image,
-          capacity: data.capacity,
-          category: data.category,
+          ...data,
           venue_details: transformVenueDetails(data.venue_details),
           schedule_timeline: transformScheduleTimeline(data.schedule_timeline),
-          ticket_types: data.ticket_types || []
+          ticket_types: transformedTicketTypes
         };
-
+        
         return transformedEvent;
       }
 
@@ -49,14 +51,7 @@ export const useEvents = (eventId?: string) => {
         .from("events")
         .select(`
           *,
-          ticket_types (
-            id,
-            name,
-            description,
-            price,
-            capacity,
-            benefits
-          )
+          ticket_types (*)
         `)
         .eq("is_deleted", false)
         .order("date", { ascending: true });
@@ -67,7 +62,20 @@ export const useEvents = (eventId?: string) => {
         ...event,
         venue_details: transformVenueDetails(event.venue_details),
         schedule_timeline: transformScheduleTimeline(event.schedule_timeline),
-        ticket_types: event.ticket_types || []
+        ticket_types: (event.ticket_types || []).map(ticket => ({
+          id: ticket.id,
+          name: ticket.name,
+          description: ticket.description,
+          price: ticket.price,
+          capacity: ticket.capacity,
+          benefits: Array.isArray(ticket.benefits) ? ticket.benefits : [],
+          event_id: ticket.event_id,
+          sale_start_date: ticket.sale_start_date,
+          sale_end_date: ticket.sale_end_date,
+          status: ticket.status,
+          created_at: ticket.created_at,
+          updated_at: ticket.updated_at
+        }))
       })) as Event[];
     },
   });

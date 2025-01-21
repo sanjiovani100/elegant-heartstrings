@@ -1,3 +1,4 @@
+import React from "react";
 import { useEvents } from "@/hooks/use-events";
 import EventsHeroSection from "@/modules/public/components/events/EventsHeroSection";
 import EventsFilters from "@/modules/public/components/events/EventsFilters";
@@ -7,7 +8,7 @@ import { ResizeErrorBoundary } from "@/components/error/ResizeErrorBoundary";
 import { EventFilters } from "@/features/events/types/event.types";
 
 const EventsListing = () => {
-  const { data: events, isLoading } = useEvents();
+  const { data: events = [], isLoading } = useEvents();
 
   const handleFiltersChange = (filters: EventFilters) => {
     // Handle filter changes
@@ -28,7 +29,7 @@ const EventsListing = () => {
 
           <main className="flex-1">
             <ResizeErrorBoundary>
-              <EventsGrid events={events || []} isLoading={isLoading} />
+              <EventsGrid events={events} isLoading={isLoading} />
             </ResizeErrorBoundary>
           </main>
         </div>

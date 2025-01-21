@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import EventDetailsComponent from "@/components/events/EventDetails";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { Event } from "@/types/events";
+import { Event, TicketType } from "@/types/events";
 import { transformVenueDetails, transformScheduleTimeline } from "@/types/utils/transformers";
 
 const EventDetails = () => {
@@ -19,23 +19,43 @@ const EventDetails = () => {
       
       const { data, error } = await supabase
         .from('events')
-        .select('*')
+        .select(`
+          *,
+          ticket_types (*)
+        `)
         .eq('id', id)
         .single();
       
       if (error) throw error;
       if (!data) throw new Error('Event not found');
       
-      // Transform the data to match our Event type
+      // Transform ticket types
+      const transformedTicketTypes: TicketType[] = (data.ticket_types || []).map(ticket => ({
+        id: ticket.id,
+        name: ticket.name,
+        description: ticket.description,
+        price: ticket.price,
+        capacity: ticket.capacity,
+        benefits: Array.isArray(ticket.benefits) ? ticket.benefits : [],
+        event_id: ticket.event_id,
+        sale_start_date: ticket.sale_start_date,
+        sale_end_date: ticket.sale_end_date,
+        status: ticket.status,
+        created_at: ticket.created_at,
+        updated_at: ticket.updated_at
+      }));
+      
+      // Transform the event data
       const transformedEvent: Event = {
         ...data,
         venue_details: transformVenueDetails(data.venue_details),
-        schedule_timeline: transformScheduleTimeline(data.schedule_timeline)
+        schedule_timeline: transformScheduleTimeline(data.schedule_timeline),
+        ticket_types: transformedTicketTypes
       };
       
       return transformedEvent;
     },
-    enabled: !!id // Only run query if we have an ID
+    enabled: !!id
   });
 
   React.useEffect(() => {
