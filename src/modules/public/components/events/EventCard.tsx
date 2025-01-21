@@ -13,6 +13,9 @@ interface EventCardProps {
 
 const EventCard = ({ event }: EventCardProps) => {
   const navigate = useNavigate();
+  const lowestPrice = event.ticket_types.length > 0 
+    ? `$${Math.min(...event.ticket_types.map(t => t.price))}`
+    : 'Price on request';
 
   return (
     <Card className="bg-white/5 border-white/10 overflow-hidden group hover:border-fashionista-pink/50 transition-all duration-300">
@@ -47,13 +50,13 @@ const EventCard = ({ event }: EventCardProps) => {
           <div className="flex items-center gap-2">
             <Ticket className="w-4 h-4 text-fashionista-pink" />
             <span className="text-sm">
-              {event.capacity ? `${event.capacity} tickets available` : event.price}
+              {event.capacity ? `${event.capacity} tickets available` : lowestPrice}
             </span>
           </div>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-white font-medium">{event.price}</span>
+          <span className="text-white font-medium">{lowestPrice}</span>
           <Button 
             variant="outline"
             className="border-fashionista-pink text-fashionista-pink hover:bg-fashionista-pink hover:text-white"

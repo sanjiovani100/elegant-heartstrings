@@ -30,7 +30,13 @@ export interface TicketType {
   description: string | null;
   price: number;
   capacity: number | null;
-  benefits: Json | null;
+  benefits: string[];
+  event_id?: string | null;
+  sale_start_date?: string | null;
+  sale_end_date?: string | null;
+  status?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
 }
 
 export interface Event {

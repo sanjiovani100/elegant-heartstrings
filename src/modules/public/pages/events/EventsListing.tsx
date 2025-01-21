@@ -1,11 +1,15 @@
+import { useEvents } from "@/hooks/use-events";
 import EventsHeroSection from "@/modules/public/components/events/EventsHeroSection";
 import EventsFilters from "@/modules/public/components/events/EventsFilters";
 import EventsGrid from "@/modules/public/components/events/EventsGrid";
 import EventsCTA from "@/modules/public/components/events/EventsCTA";
 import { ResizeErrorBoundary } from "@/components/error/ResizeErrorBoundary";
+import { EventFilters } from "@/features/events/types/event.types";
 
 const EventsListing = () => {
-  const handleFiltersChange = (filters: any) => {
+  const { data: events, isLoading } = useEvents();
+
+  const handleFiltersChange = (filters: EventFilters) => {
     // Handle filter changes
     console.log("Filters changed:", filters);
   };
@@ -24,7 +28,7 @@ const EventsListing = () => {
 
           <main className="flex-1">
             <ResizeErrorBoundary>
-              <EventsGrid />
+              <EventsGrid events={events || []} isLoading={isLoading} />
             </ResizeErrorBoundary>
           </main>
         </div>
