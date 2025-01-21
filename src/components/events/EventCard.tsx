@@ -14,6 +14,9 @@ interface EventCardProps {
 const EventCard = ({ event }: EventCardProps) => {
   const navigate = useNavigate();
   const venueDetails = transformVenueDetails(event.venue_details);
+  const lowestPrice = event.ticket_types.length > 0 
+    ? `$${Math.min(...event.ticket_types.map(t => t.price))}`
+    : 'Price on request';
 
   return (
     <ResizeErrorBoundary>
@@ -57,7 +60,7 @@ const EventCard = ({ event }: EventCardProps) => {
 
           <div className="flex items-center justify-between">
             <span className="text-white font-medium">
-              {event.price || 'Price on request'}
+              {lowestPrice}
             </span>
             <Button 
               variant="gradient"

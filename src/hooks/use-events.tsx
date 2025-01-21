@@ -8,7 +8,6 @@ export const useEvents = (eventId?: string) => {
     queryKey: ["events", eventId],
     queryFn: async () => {
       if (eventId) {
-        // Fetch single event
         const { data, error } = await supabase
           .from("events")
           .select(`
@@ -25,15 +24,9 @@ export const useEvents = (eventId?: string) => {
           .eq('id', eventId)
           .maybeSingle();
 
-        if (error) {
-          throw error;
-        }
+        if (error) throw error;
+        if (!data) throw new Error("Event not found");
 
-        if (!data) {
-          throw new Error("Event not found");
-        }
-
-        // Transform the data to match our Event type
         const transformedEvent: Event = {
           id: data.id,
           title: data.title,
@@ -50,35 +43,32 @@ export const useEvents = (eventId?: string) => {
         };
 
         return transformedEvent;
-      } else {
-        // Fetch all events
-        const { data, error } = await supabase
-          .from("events")
-          .select(`
-            *,
-            ticket_types (
-              id,
-              name,
-              description,
-              price,
-              capacity,
-              benefits
-            )
-          `)
-          .eq("is_deleted", false)
-          .order("date", { ascending: true });
-
-        if (error) {
-          throw error;
-        }
-
-        return data.map(event => ({
-          ...event,
-          venue_details: transformVenueDetails(event.venue_details),
-          schedule_timeline: transformScheduleTimeline(event.schedule_timeline),
-          ticket_types: event.ticket_types || []
-        })) as Event[];
       }
+
+      const { data, error } = await supabase
+        .from("events")
+        .select(`
+          *,
+          ticket_types (
+            id,
+            name,
+            description,
+            price,
+            capacity,
+            benefits
+          )
+        `)
+        .eq("is_deleted", false)
+        .order("date", { ascending: true });
+
+      if (error) throw error;
+
+      return data.map(event => ({
+        ...event,
+        venue_details: transformVenueDetails(event.venue_details),
+        schedule_timeline: transformScheduleTimeline(event.schedule_timeline),
+        ticket_types: event.ticket_types || []
+      })) as Event[];
     },
   });
 };
