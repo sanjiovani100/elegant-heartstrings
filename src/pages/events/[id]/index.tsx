@@ -10,8 +10,29 @@ import { EventSchedule } from "./components/EventSchedule";
 import { VenueInfo } from "./components/VenueInfo";
 import { TicketingSection } from "./components/TicketingSection";
 import { ResizeErrorBoundary } from "@/components/error/ResizeErrorBoundary";
-import { Event } from "@/types/events";
+import { Event, TicketType } from "@/types/events";
 import { transformVenueDetails, transformScheduleTimeline } from "@/shared/utils/transformers";
+
+const transformTicketTypes = (ticketTypes: any[]): TicketType[] => {
+  return ticketTypes.map(ticket => ({
+    id: ticket.id,
+    name: ticket.name,
+    description: ticket.description || null,
+    price: ticket.price,
+    capacity: ticket.capacity || null,
+    benefits: Array.isArray(ticket.benefits) 
+      ? ticket.benefits.map(String)
+      : typeof ticket.benefits === 'string'
+      ? JSON.parse(ticket.benefits)
+      : [],
+    event_id: ticket.event_id,
+    sale_start_date: ticket.sale_start_date,
+    sale_end_date: ticket.sale_end_date,
+    status: ticket.status,
+    created_at: ticket.created_at,
+    updated_at: ticket.updated_at
+  }));
+};
 
 const EventDetailsPage = () => {
   const params = useParams();
@@ -23,12 +44,6 @@ const EventDetailsPage = () => {
     queryFn: async () => {
       if (!id) throw new Error('Event ID is required');
       
-      // Validate UUID format using a regex
-      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-      if (!uuidRegex.test(id)) {
-        throw new Error('Invalid event ID format');
-      }
-
       const { data, error } = await supabase
         .from('events')
         .select(`
@@ -41,11 +56,11 @@ const EventDetailsPage = () => {
       if (error) throw error;
       if (!data) throw new Error('Event not found');
       
-      // Transform the data to match our Event type
       const transformedEvent: Event = {
         ...data,
         venue_details: transformVenueDetails(data.venue_details),
-        schedule_timeline: transformScheduleTimeline(data.schedule_timeline)
+        schedule_timeline: transformScheduleTimeline(data.schedule_timeline),
+        ticket_types: transformTicketTypes(data.ticket_types || [])
       };
       
       return transformedEvent;
@@ -58,7 +73,7 @@ const EventDetailsPage = () => {
     if (error) {
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to load event details. Please try again later.",
+        description: error instanceof Error ? error.message : "Failed to load event details",
         variant: "destructive",
       });
     }
