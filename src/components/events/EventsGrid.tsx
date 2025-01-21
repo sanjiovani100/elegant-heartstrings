@@ -8,7 +8,7 @@ export interface EventsGridProps {
   isLoading: boolean;
 }
 
-export const EventsGrid: React.FC<EventsGridProps> = ({ events, isLoading }) => {
+const EventsGrid = ({ events, isLoading }: EventsGridProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {isLoading ? (
@@ -29,3 +29,5 @@ export const EventsGrid: React.FC<EventsGridProps> = ({ events, isLoading }) => 
     </div>
   );
 };
+
+export default EventsGrid;

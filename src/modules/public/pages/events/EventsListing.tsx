@@ -1,6 +1,6 @@
 import React from "react";
 import { useEvents } from "@/hooks/use-events";
-import { EventsGrid } from "@/components/events/EventsGrid";
+import EventsGrid from "@/components/events/EventsGrid";
 import { useToast } from "@/hooks/use-toast";
 
 const EventsListing = () => {
