@@ -43,7 +43,6 @@ const EventsPage = () => {
       }
     }
     
-    // Add price range filtering when price data is available
     return true;
   });
 
@@ -59,11 +58,9 @@ const EventsPage = () => {
 
   const handleFilterChange = (newFilters: FilterType) => {
     setFilters(newFilters);
-    // Save filters to localStorage for persistence
     localStorage.setItem('eventFilters', JSON.stringify(newFilters));
   };
 
-  // Load saved filters on mount
   React.useEffect(() => {
     const savedFilters = localStorage.getItem('eventFilters');
     if (savedFilters) {

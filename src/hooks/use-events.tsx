@@ -49,7 +49,7 @@ export const useEvents = (eventId?: string) => {
           ticket_types: transformTicketTypes(data.ticket_types || [])
         };
         
-        return transformedEvent;
+        return [transformedEvent]; // Return as array with single event
       }
 
       const { data, error } = await supabase
