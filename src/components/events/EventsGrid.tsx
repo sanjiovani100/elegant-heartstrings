@@ -3,12 +3,12 @@ import EventCard from "./EventCard";
 import { Event } from "@/types/events";
 import { ResizeErrorBoundary } from "../error/ResizeErrorBoundary";
 
-interface EventsGridProps {
+export interface EventsGridProps {
   events: Event[];
   isLoading: boolean;
 }
 
-const EventsGrid = ({ events, isLoading }: EventsGridProps) => {
+export const EventsGrid: React.FC<EventsGridProps> = ({ events, isLoading }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {isLoading ? (
@@ -29,5 +29,3 @@ const EventsGrid = ({ events, isLoading }: EventsGridProps) => {
     </div>
   );
 };
-
-export default EventsGrid;

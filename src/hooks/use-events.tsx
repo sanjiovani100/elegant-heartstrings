@@ -8,9 +8,9 @@ const transformTicketTypes = (ticketTypes: any[]): TicketType[] => {
   return ticketTypes.map(ticket => ({
     id: ticket.id,
     name: ticket.name,
-    description: ticket.description,
+    description: ticket.description || null,
     price: ticket.price,
-    capacity: ticket.capacity,
+    capacity: ticket.capacity || null,
     benefits: Array.isArray(ticket.benefits) 
       ? ticket.benefits.map(String)
       : typeof ticket.benefits === 'string'
