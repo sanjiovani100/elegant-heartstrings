@@ -1,5 +1,10 @@
 import { Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { HeroContent } from "./hero/HeroContent";
+import { HeroSkeleton } from "./hero/HeroSkeleton";
+import { HeroError } from "./hero/HeroError";
+import { ResizeErrorBoundary } from "./error/ResizeErrorBoundary";
 
 const FloatingHeart = ({ delay }: { delay: number }) => (
   <div 
@@ -15,6 +20,19 @@ const FloatingHeart = ({ delay }: { delay: number }) => (
 );
 
 const Hero = () => {
+  const { data: translations, isLoading, error, refetch } = useQuery({
+    queryKey: ['translations', 'hero'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('content_translations')
+        .select('*')
+        .in('key', ['hero.title', 'hero.subtitle', 'hero.cta.tickets', 'hero.cta.signup']);
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
   return (
     <div className="relative h-screen overflow-hidden">
       {/* Floating Hearts */}
@@ -35,35 +53,15 @@ const Hero = () => {
 
       {/* Content */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center px-4 space-y-8 max-w-4xl mx-auto">
-          {/* Main Title */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-playfair text-white mb-6 animate-fade-up drop-shadow-lg leading-tight">
-            Fashionistas: A Night of Glamour & Fashion
-          </h1>
-
-          {/* Tagline */}
-          <p className="text-xl md:text-2xl text-[#F0F0F0] mb-8 animate-fade-up delay-100 font-montserrat">
-            Celebrate Valentine's Day with Medellín's most glamorous lingerie fashion show.
-          </p>
-
-          {/* CTAs */}
-          <div className="space-x-6 animate-fade-up delay-200">
-            <Button 
-              size="lg" 
-              variant="gradient"
-              className="text-white px-8 py-6 text-lg transition-all duration-300 hover:shadow-glow font-inter"
-            >
-              Get Tickets
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="bg-white/10 text-white hover:bg-white/20 px-8 py-6 text-lg transition-all duration-300 font-inter"
-            >
-              Sign Up Now
-            </Button>
-          </div>
-        </div>
+        <ResizeErrorBoundary>
+          {isLoading ? (
+            <HeroSkeleton />
+          ) : error ? (
+            <HeroError onRetry={() => refetch()} />
+          ) : (
+            <HeroContent />
+          )}
+        </ResizeErrorBoundary>
       </div>
     </div>
   );
