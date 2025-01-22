@@ -80,9 +80,9 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <NavLinks />
             <NavDropdowns />
+            <LanguageSwitcher />
           </div>
           <div className="flex items-center space-x-4">
-            <LanguageSwitcher />
             <AuthButtons user={user} onSignOut={handleSignOut} />
             <MobileMenu 
               isOpen={isMobileMenuOpen}
