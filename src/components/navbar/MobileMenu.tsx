@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Menu, X, Users, ChevronDown } from "lucide-react";
+import { Menu, X, Users, ChevronDown, Globe } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +15,8 @@ interface MobileMenuProps {
 }
 
 const MobileMenu = ({ isOpen, onToggle, role }: MobileMenuProps) => {
+  const { currentLanguage, setLanguage } = useLanguage();
+
   return (
     <>
       <button
@@ -47,6 +50,23 @@ const MobileMenu = ({ isOpen, onToggle, role }: MobileMenuProps) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          <div className="flex items-center space-x-2 text-[#F0F0F0]">
+            <Globe className="w-5 h-5" />
+            <button
+              className="px-3 py-1 hover:text-white transition-colors"
+              onClick={() => setLanguage('en')}
+            >
+              EN
+            </button>
+            <span>|</span>
+            <button
+              className="px-3 py-1 hover:text-white transition-colors"
+              onClick={() => setLanguage('es')}
+            >
+              ES
+            </button>
+          </div>
 
           <a href="#about" className="nav-link text-[#F0F0F0] hover:text-white text-lg">About</a>
           <a href="#contact" className="nav-link text-[#F0F0F0] hover:text-white text-lg">Contact</a>

@@ -77,15 +77,19 @@ const Navbar = () => {
       <div className="container mx-auto px-4 h-full">
         <div className="flex justify-between items-center h-full">
           <NavLogo />
-          <NavLinks />
-          <NavDropdowns />
-          <LanguageSwitcher />
-          <AuthButtons user={user} onSignOut={handleSignOut} />
-          <MobileMenu 
-            isOpen={isMobileMenuOpen}
-            onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            role={role}
-          />
+          <div className="hidden md:flex items-center space-x-8">
+            <NavLinks />
+            <NavDropdowns />
+          </div>
+          <div className="flex items-center space-x-4">
+            <LanguageSwitcher />
+            <AuthButtons user={user} onSignOut={handleSignOut} />
+            <MobileMenu 
+              isOpen={isMobileMenuOpen}
+              onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              role={role}
+            />
+          </div>
         </div>
       </div>
     </nav>
