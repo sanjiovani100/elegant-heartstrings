@@ -1,3 +1,6 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { LanguageProvider } from "./contexts/LanguageContext";
+import { Toaster } from "./components/ui/toaster";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "@/modules/public/pages/home";
 import AboutPage from "@/modules/public/pages/about";
@@ -16,8 +19,12 @@ import RoleManagementPage from "@/components/admin/RoleManagement";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import RoleProtectedRoute from "@/components/auth/RoleProtectedRoute";
 
-const App = () => {
+const queryClient = new QueryClient();
+
+function App() {
   return (
+    <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<HomePage />} />
@@ -60,7 +67,10 @@ const App = () => {
         } 
       />
     </Routes>
+        <Toaster />
+      </LanguageProvider>
+    </QueryClientProvider>
   );
-};
+}
 
 export default App;

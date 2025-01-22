@@ -84,6 +84,47 @@ export type Database = {
         }
         Relationships: []
       }
+      content_translations: {
+        Row: {
+          content_type: string | null
+          created_at: string | null
+          en: string | null
+          es: string | null
+          id: string
+          key: string
+          section_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content_type?: string | null
+          created_at?: string | null
+          en?: string | null
+          es?: string | null
+          id?: string
+          key: string
+          section_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content_type?: string | null
+          created_at?: string | null
+          en?: string | null
+          es?: string | null
+          id?: string
+          key?: string
+          section_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_translations_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "page_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_sponsorships: {
         Row: {
           agreement_details: Json | null
@@ -506,6 +547,68 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      page_sections: {
+        Row: {
+          created_at: string | null
+          id: string
+          order: number
+          page_id: string | null
+          section_key: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          order: number
+          page_id?: string | null
+          section_key: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          order?: number
+          page_id?: string | null
+          section_key?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "page_sections_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pages: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_published: boolean | null
+          metadata: Json | null
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          metadata?: Json | null
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          metadata?: Json | null
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
