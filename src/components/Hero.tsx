@@ -5,6 +5,7 @@ import { HeroContent } from "./hero/HeroContent";
 import { HeroSkeleton } from "./hero/HeroSkeleton";
 import { HeroError } from "./hero/HeroError";
 import { ResizeErrorBoundary } from "./error/ResizeErrorBoundary";
+import { ContentTranslation } from "@/types/content";
 
 const FloatingHeart = ({ delay }: { delay: number }) => (
   <div 
@@ -20,7 +21,7 @@ const FloatingHeart = ({ delay }: { delay: number }) => (
 );
 
 const Hero = () => {
-  const { data: translations, isLoading, error, refetch } = useQuery({
+  const { data: rawTranslations, isLoading, error, refetch } = useQuery({
     queryKey: ['translations', 'hero'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -34,6 +35,16 @@ const Hero = () => {
     retry: 2,
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
+
+  // Transform the data to match ContentTranslation interface
+  const translations: ContentTranslation[] | undefined = rawTranslations?.map(item => ({
+    id: item.id,
+    sectionId: item.section_id || 'hero-section', // Provide a default if null
+    key: item.key,
+    en: item.en,
+    es: item.es,
+    contentType: item.content_type as 'text' | 'html' | 'markdown'
+  }));
 
   return (
     <div className="relative h-screen overflow-hidden">
