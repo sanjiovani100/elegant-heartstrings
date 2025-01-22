@@ -8,19 +8,25 @@ interface HeroErrorProps {
 
 export const HeroError = ({ onRetry }: HeroErrorProps) => {
   return (
-    <Alert variant="destructive" className="m-4">
-      <AlertTitle>Error Loading Content</AlertTitle>
-      <AlertDescription className="mt-2">
-        <p className="mb-4">There was an error loading the content. Please try again.</p>
-        <Button 
-          variant="outline" 
-          onClick={onRetry}
-          className="flex items-center gap-2"
-        >
-          <RefreshCw className="w-4 h-4" />
-          Retry
-        </Button>
-      </AlertDescription>
-    </Alert>
+    <div className="max-w-lg mx-auto px-4">
+      <Alert variant="destructive" className="animate-fade-up">
+        <AlertTitle className="text-lg font-semibold mb-2">
+          Error Loading Content
+        </AlertTitle>
+        <AlertDescription className="space-y-4">
+          <p>
+            We encountered an error while loading the content. Please try again or contact support if the problem persists.
+          </p>
+          <Button 
+            variant="outline" 
+            onClick={onRetry}
+            className="flex items-center gap-2 mt-2"
+          >
+            <RefreshCw className="w-4 h-4" />
+            Try Again
+          </Button>
+        </AlertDescription>
+      </Alert>
+    </div>
   );
 };

@@ -1,22 +1,51 @@
 import { TranslatedContent } from "@/components/content/TranslatedContent";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { ContentTranslation } from "@/types/content";
 
 export const HeroContent = () => {
   const navigate = useNavigate();
+
+  const translations: ContentTranslation[] = [
+    {
+      id: "hero-title",
+      sectionId: "hero-section",
+      key: "hero.title",
+      en: "Fashionistas: A Night of Glamour & Fashion",
+      es: "Fashionistas: Una Noche de Glamour y Moda",
+      contentType: "text"
+    },
+    {
+      id: "hero-subtitle",
+      sectionId: "hero-section",
+      key: "hero.subtitle",
+      en: "Celebrate Valentine's Day with Medellín's most glamorous lingerie fashion show.",
+      es: "Celebra el Día de San Valentín con el desfile de lencería más glamoroso de Medellín.",
+      contentType: "text"
+    },
+    {
+      id: "hero-cta-tickets",
+      sectionId: "hero-section",
+      key: "hero.cta.tickets",
+      en: "Get Tickets",
+      es: "Comprar Entradas",
+      contentType: "text"
+    },
+    {
+      id: "hero-cta-signup",
+      sectionId: "hero-section",
+      key: "hero.cta.signup",
+      en: "Sign Up Now",
+      es: "Regístrate Ahora",
+      contentType: "text"
+    }
+  ];
 
   return (
     <div className="text-center px-4 space-y-8 max-w-4xl mx-auto">
       <h1 className="text-5xl md:text-7xl lg:text-8xl font-playfair text-white mb-6 animate-fade-up drop-shadow-lg leading-tight">
         <TranslatedContent
-          translations={[
-            {
-              key: "hero.title",
-              en: "Fashionistas: A Night of Glamour & Fashion",
-              es: "Fashionistas: Una Noche de Glamour y Moda",
-              contentType: "text"
-            }
-          ]}
+          translations={translations}
           contentKey="hero.title"
           defaultValue="Fashionistas: A Night of Glamour & Fashion"
         />
@@ -24,14 +53,7 @@ export const HeroContent = () => {
 
       <p className="text-xl md:text-2xl text-[#F0F0F0] mb-8 animate-fade-up delay-100 font-montserrat">
         <TranslatedContent
-          translations={[
-            {
-              key: "hero.subtitle",
-              en: "Celebrate Valentine's Day with Medellín's most glamorous lingerie fashion show.",
-              es: "Celebra el Día de San Valentín con el desfile de lencería más glamoroso de Medellín.",
-              contentType: "text"
-            }
-          ]}
+          translations={translations}
           contentKey="hero.subtitle"
           defaultValue="Celebrate Valentine's Day with Medellín's most glamorous lingerie fashion show."
         />
@@ -45,14 +67,7 @@ export const HeroContent = () => {
           onClick={() => navigate('/tickets')}
         >
           <TranslatedContent
-            translations={[
-              {
-                key: "hero.cta.tickets",
-                en: "Get Tickets",
-                es: "Comprar Entradas",
-                contentType: "text"
-              }
-            ]}
+            translations={translations}
             contentKey="hero.cta.tickets"
             defaultValue="Get Tickets"
           />
@@ -64,14 +79,7 @@ export const HeroContent = () => {
           onClick={() => navigate('/signup')}
         >
           <TranslatedContent
-            translations={[
-              {
-                key: "hero.cta.signup",
-                en: "Sign Up Now",
-                es: "Regístrate Ahora",
-                contentType: "text"
-              }
-            ]}
+            translations={translations}
             contentKey="hero.cta.signup"
             defaultValue="Sign Up Now"
           />

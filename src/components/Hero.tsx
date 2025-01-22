@@ -30,7 +30,9 @@ const Hero = () => {
       
       if (error) throw error;
       return data;
-    }
+    },
+    retry: 2,
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
 
   return (
