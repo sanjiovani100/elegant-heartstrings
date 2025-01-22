@@ -54,14 +54,14 @@ const MobileMenu = ({ isOpen, onToggle, role }: MobileMenuProps) => {
           <div className="flex items-center space-x-2 text-[#F0F0F0]">
             <Globe className="w-5 h-5" />
             <button
-              className="px-3 py-1 hover:text-white transition-colors"
+              className={`px-3 py-1 transition-colors ${currentLanguage === 'en' ? 'text-white' : 'hover:text-white'}`}
               onClick={() => setLanguage('en')}
             >
               EN
             </button>
             <span>|</span>
             <button
-              className="px-3 py-1 hover:text-white transition-colors"
+              className={`px-3 py-1 transition-colors ${currentLanguage === 'es' ? 'text-white' : 'hover:text-white'}`}
               onClick={() => setLanguage('es')}
             >
               ES
