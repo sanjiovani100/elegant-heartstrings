@@ -3,43 +3,12 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ContentTranslation } from "@/types/content";
 
-export const HeroContent = () => {
-  const navigate = useNavigate();
+interface HeroContentProps {
+  translations: ContentTranslation[];
+}
 
-  const translations: ContentTranslation[] = [
-    {
-      id: "hero-title",
-      sectionId: "hero-section",
-      key: "hero.title",
-      en: "Fashionistas: A Night of Glamour & Fashion",
-      es: "Fashionistas: Una Noche de Glamour y Moda",
-      contentType: "text"
-    },
-    {
-      id: "hero-subtitle",
-      sectionId: "hero-section",
-      key: "hero.subtitle",
-      en: "Celebrate Valentine's Day with Medellín's most glamorous lingerie fashion show.",
-      es: "Celebra el Día de San Valentín con el desfile de lencería más glamoroso de Medellín.",
-      contentType: "text"
-    },
-    {
-      id: "hero-cta-tickets",
-      sectionId: "hero-section",
-      key: "hero.cta.tickets",
-      en: "Get Tickets",
-      es: "Comprar Entradas",
-      contentType: "text"
-    },
-    {
-      id: "hero-cta-signup",
-      sectionId: "hero-section",
-      key: "hero.cta.signup",
-      en: "Sign Up Now",
-      es: "Regístrate Ahora",
-      contentType: "text"
-    }
-  ];
+export const HeroContent = ({ translations }: HeroContentProps) => {
+  const navigate = useNavigate();
 
   return (
     <div className="text-center px-4 space-y-8 max-w-4xl mx-auto">

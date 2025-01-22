@@ -60,9 +60,9 @@ const Hero = () => {
             <HeroSkeleton />
           ) : error ? (
             <HeroError onRetry={() => refetch()} />
-          ) : (
-            <HeroContent />
-          )}
+          ) : translations ? (
+            <HeroContent translations={translations} />
+          ) : null}
         </ResizeErrorBoundary>
       </div>
     </div>
