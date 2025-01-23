@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Language } from '@/types/content';
+import { useToast } from '@/hooks/use-toast';
 
 interface LanguageContextType {
   currentLanguage: Language;
+  isChangingLanguage: boolean;
   setLanguage: (lang: Language) => void;
   t: (key: string, defaultValue?: string) => string;
 }
@@ -14,19 +16,39 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const saved = localStorage.getItem('language');
     return (saved as Language) || 'en';
   });
+  const [isChangingLanguage, setIsChangingLanguage] = useState(false);
+  const { toast } = useToast();
 
-  const setLanguage = (lang: Language) => {
-    setCurrentLanguage(lang);
-    localStorage.setItem('language', lang);
+  const setLanguage = async (lang: Language) => {
+    try {
+      setIsChangingLanguage(true);
+      setCurrentLanguage(lang);
+      localStorage.setItem('language', lang);
+      
+      toast({
+        title: "Language Changed",
+        description: `Successfully switched to ${lang === 'en' ? 'English' : 'Español'}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to change language. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      // Add a small delay to make the transition smoother
+      setTimeout(() => {
+        setIsChangingLanguage(false);
+      }, 300);
+    }
   };
 
   const t = (key: string, defaultValue?: string): string => {
-    // This is a simple implementation - we'll enhance it when we add the content loading system
     return defaultValue || key;
   };
 
   return (
-    <LanguageContext.Provider value={{ currentLanguage, setLanguage, t }}>
+    <LanguageContext.Provider value={{ currentLanguage, isChangingLanguage, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

@@ -3,6 +3,7 @@ import { ContentTranslation } from "@/types/content";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TranslatedContentProps {
   translations: ContentTranslation[];
@@ -23,10 +24,14 @@ export const TranslatedContent: React.FC<TranslatedContentProps> = ({
   isError = false,
   errorMessage,
 }) => {
-  const { currentLanguage } = useLanguage();
+  const { currentLanguage, isChangingLanguage } = useLanguage();
   
-  if (showLoader) {
-    return <Skeleton className={cn("h-4 w-full max-w-[300px]", className)} />;
+  if (showLoader || isChangingLanguage) {
+    return (
+      <div className="animate-pulse">
+        <Skeleton className={cn("h-4 w-full max-w-[300px]", className)} />
+      </div>
+    );
   }
 
   if (isError) {
@@ -46,9 +51,22 @@ export const TranslatedContent: React.FC<TranslatedContentProps> = ({
     return <>{defaultValue || contentKey}</>;
   }
 
-  if (translation?.contentType === 'html') {
-    return <div className={className} dangerouslySetInnerHTML={{ __html: content }} />;
-  }
-
-  return <span className={className}>{content}</span>;
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentLanguage + contentKey}
+        initial={{ opacity: 0, y: 5 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -5 }}
+        transition={{ duration: 0.2 }}
+        className={className}
+      >
+        {translation?.contentType === 'html' ? (
+          <div dangerouslySetInnerHTML={{ __html: content }} />
+        ) : (
+          <span>{content}</span>
+        )}
+      </motion.div>
+    </AnimatePresence>
+  );
 };
