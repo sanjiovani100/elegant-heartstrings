@@ -92,8 +92,13 @@ export type Database = {
           es: string | null
           id: string
           key: string
+          last_reviewed_at: string | null
+          reviewed_by: string | null
           section_id: string | null
+          status: string
           updated_at: string | null
+          validation_errors: Json | null
+          version: number
         }
         Insert: {
           content_type?: string | null
@@ -102,8 +107,13 @@ export type Database = {
           es?: string | null
           id?: string
           key: string
+          last_reviewed_at?: string | null
+          reviewed_by?: string | null
           section_id?: string | null
+          status?: string
           updated_at?: string | null
+          validation_errors?: Json | null
+          version?: number
         }
         Update: {
           content_type?: string | null
@@ -112,8 +122,13 @@ export type Database = {
           es?: string | null
           id?: string
           key?: string
+          last_reviewed_at?: string | null
+          reviewed_by?: string | null
           section_id?: string | null
+          status?: string
           updated_at?: string | null
+          validation_errors?: Json | null
+          version?: number
         }
         Relationships: [
           {
@@ -1324,6 +1339,44 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      translation_reviews: {
+        Row: {
+          comments: string | null
+          created_at: string | null
+          id: string
+          reviewer_id: string
+          status: string
+          translation_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          comments?: string | null
+          created_at?: string | null
+          id?: string
+          reviewer_id: string
+          status: string
+          translation_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          comments?: string | null
+          created_at?: string | null
+          id?: string
+          reviewer_id?: string
+          status?: string
+          translation_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "translation_reviews_translation_id_fkey"
+            columns: ["translation_id"]
+            isOneToOne: false
+            referencedRelation: "content_translations"
             referencedColumns: ["id"]
           },
         ]

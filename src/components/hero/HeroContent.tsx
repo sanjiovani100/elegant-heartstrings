@@ -17,6 +17,7 @@ export const HeroContent = ({ translations }: HeroContentProps) => {
           translations={translations}
           contentKey="hero.title"
           defaultValue="Fashionistas: A Night of Glamour & Fashion"
+          className="block"
         />
       </h1>
 
@@ -25,6 +26,7 @@ export const HeroContent = ({ translations }: HeroContentProps) => {
           translations={translations}
           contentKey="hero.subtitle"
           defaultValue="Celebrate Valentine's Day with Medellín's most glamorous lingerie fashion show."
+          className="block"
         />
       </p>
 
