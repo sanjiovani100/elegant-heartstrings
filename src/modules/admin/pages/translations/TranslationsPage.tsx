@@ -32,7 +32,22 @@ const TranslationsPage = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data as ContentTranslation[];
+
+      return data?.map(item => ({
+        id: item.id,
+        sectionId: item.section_id,
+        key: item.key,
+        en: item.en,
+        es: item.es,
+        contentType: item.content_type as 'text' | 'html' | 'markdown',
+        status: item.status,
+        version: item.version,
+        updatedAt: item.updated_at,
+        createdAt: item.created_at,
+        lastReviewedAt: item.last_reviewed_at,
+        reviewedBy: item.reviewed_by,
+        validationErrors: item.validation_errors
+      })) as ContentTranslation[];
     }
   });
 
@@ -95,7 +110,7 @@ const TranslationsPage = () => {
                 <TableCell>{translation.es}</TableCell>
                 <TableCell>{translation.status}</TableCell>
                 <TableCell>
-                  {new Date(translation.updated_at).toLocaleDateString()}
+                  {new Date(translation.updatedAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
                   <Button

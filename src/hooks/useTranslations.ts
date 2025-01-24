@@ -31,7 +31,12 @@ export const useTranslations = (sectionKey: string) => {
         es: item.es,
         contentType: item.content_type as 'text' | 'html' | 'markdown',
         status: item.status,
-        version: item.version
+        version: item.version,
+        updatedAt: item.updated_at,
+        createdAt: item.created_at,
+        lastReviewedAt: item.last_reviewed_at,
+        reviewedBy: item.reviewed_by,
+        validationErrors: item.validation_errors
       })) as ContentTranslation[];
     },
     staleTime: 1000 * 60 * 5, // Consider data fresh for 5 minutes
