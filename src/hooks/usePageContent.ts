@@ -42,6 +42,13 @@ export const usePageContent = (slug: string) => {
           en: trans.en,
           es: trans.es,
           contentType: trans.content_type,
+          status: trans.status,
+          version: trans.version,
+          updatedAt: trans.updated_at,
+          createdAt: trans.created_at,
+          lastReviewedAt: trans.last_reviewed_at,
+          reviewedBy: trans.reviewed_by,
+          validationErrors: trans.validation_errors
         })),
       }));
 
