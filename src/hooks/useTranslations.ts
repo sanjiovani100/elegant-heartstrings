@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 export const useTranslations = (sectionKey: string) => {
   const { toast } = useToast();
 
-  return useQuery({
+  return useQuery<ContentTranslation[], Error>({
     queryKey: ['translations', sectionKey],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -23,7 +23,7 @@ export const useTranslations = (sectionKey: string) => {
         throw error;
       }
 
-      return data?.map(item => ({
+      return (data || []).map(item => ({
         id: item.id,
         sectionId: item.section_id,
         key: item.key,
@@ -37,7 +37,7 @@ export const useTranslations = (sectionKey: string) => {
         lastReviewedAt: item.last_reviewed_at,
         reviewedBy: item.reviewed_by,
         validationErrors: item.validation_errors
-      })) as ContentTranslation[];
+      }));
     },
     staleTime: 1000 * 60 * 5, // Consider data fresh for 5 minutes
     gcTime: 1000 * 60 * 30, // Keep in cache for 30 minutes
