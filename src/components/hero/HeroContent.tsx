@@ -11,17 +11,17 @@ export const HeroContent = ({ translations }: HeroContentProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="text-center px-4 space-y-8 max-w-4xl mx-auto">
-      <h1 className="text-5xl md:text-7xl lg:text-8xl font-playfair text-white mb-6 animate-fade-up drop-shadow-lg leading-tight">
+    <div className="text-center px-4 space-y-12 max-w-5xl mx-auto">
+      <h1 className="text-6xl md:text-8xl lg:text-9xl font-playfair text-white mb-8 animate-fade-up drop-shadow-2xl leading-tight tracking-tight">
         <TranslatedContent
           translations={translations}
           contentKey="hero.title"
           defaultValue="Fashionistas: A Night of Glamour & Fashion"
-          className="block"
+          className="block bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-600"
         />
       </h1>
 
-      <p className="text-xl md:text-2xl text-[#F0F0F0] mb-8 animate-fade-up delay-100 font-montserrat">
+      <p className="text-2xl md:text-3xl text-gray-300 mb-12 animate-fade-up delay-100 font-montserrat max-w-3xl mx-auto leading-relaxed">
         <TranslatedContent
           translations={translations}
           contentKey="hero.subtitle"
@@ -34,19 +34,22 @@ export const HeroContent = ({ translations }: HeroContentProps) => {
         <Button 
           size="lg" 
           variant="gradient"
-          className="text-white px-8 py-6 text-lg transition-all duration-300 hover:shadow-glow font-inter"
+          className="text-white px-10 py-8 text-xl transition-all duration-300 hover:shadow-glow hover:scale-105 font-inter relative overflow-hidden group"
           onClick={() => navigate('/tickets')}
         >
-          <TranslatedContent
-            translations={translations}
-            contentKey="hero.cta.tickets"
-            defaultValue="Get Tickets"
-          />
+          <span className="relative z-10">
+            <TranslatedContent
+              translations={translations}
+              contentKey="hero.cta.tickets"
+              defaultValue="Get Tickets"
+            />
+          </span>
+          <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </Button>
         <Button 
           variant="outline" 
           size="lg"
-          className="bg-white/10 text-white hover:bg-white/20 px-8 py-6 text-lg transition-all duration-300 font-inter"
+          className="bg-white/10 text-white hover:bg-white/20 px-10 py-8 text-xl transition-all duration-300 backdrop-blur-sm hover:scale-105 font-inter"
           onClick={() => navigate('/signup')}
         >
           <TranslatedContent

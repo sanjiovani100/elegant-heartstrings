@@ -26,20 +26,20 @@ export const animations = {
         "background-position": "100% 50%",
       },
     },
-    "pulse-gradient": {
+    "float": {
+      "0%, 100%": {
+        transform: "translateY(0)",
+      },
+      "50%": {
+        transform: "translateY(-20px)",
+      },
+    },
+    "pulse": {
       "0%, 100%": {
         opacity: "1",
       },
       "50%": {
         opacity: "0.5",
-      },
-    },
-    "scale-click": {
-      "0%, 100%": {
-        transform: "scale(1)",
-      },
-      "50%": {
-        transform: "scale(0.95)",
       },
     },
   },
@@ -48,7 +48,7 @@ export const animations = {
     "accordion-up": "accordion-up 0.2s ease-out",
     "fade-up": "fade-up 0.5s ease-out forwards",
     "gradient-shift": "gradient-shift 3s ease infinite",
-    "pulse-gradient": "pulse-gradient 2s ease-in-out infinite",
-    "scale-click": "scale-click 0.2s ease-in-out",
+    "float": "float 3s ease-in-out infinite",
+    "pulse": "pulse 2s ease-in-out infinite",
   },
 };
